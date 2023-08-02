@@ -33,7 +33,7 @@ pipeline {
          }
             steps {
                 // Print to screen
-                sh echo "Hello World - Thank you!"
+                echo "Hello World - Thank you!"
             }
         }
     }    
