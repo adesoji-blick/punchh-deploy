@@ -6,18 +6,36 @@ pipeline {
             AWS_DEFAULT_REGION    = credentials ('AWS_DEFAULT_REGION')
         } 
 
-    stages {
-        stage('Deploy Terraform Infrastructure') {
-            steps {
-                // Terraform Initialization
-                sh "terraform init"
-
-                // Terraform Apply
-                sh "terraform apply --auto-approve"    
+        stage("Production Approval") {
+            when {
+                anyOf {
+                branch "main"
             }
         }
-   }
-
+            steps {
+                // Deployment Approval
+                sh "echo ${env.BRANCH_NAME} Deployment Approval"
+                emailext body: "A ${env.BRANCH_NAME} build is awaiting approval ${env.JOB_URL}", 
+                    subject: "A ${env.BRANCH_NAME} deployment awaiting approval: ${currentBuild.fullDisplayName}",
+                    from: "devops@blick.ng",
+                    to: "adesoji@blick.ng"
+                timeout(time: 10, unit: 'MINUTES') {
+                    input "Deploy to ${env.BRANCH_NAME} env?"
+                }
+           }
+        }
+        
+        stage('Deploy Lambda Function to prod') {
+            when {
+                anyOf {
+                branch "main"
+             }
+         }
+            steps {
+                // Print to screen
+                sh "Hello World - Thank you!"
+            }
+        }
    
     post {  
         always {

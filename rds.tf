@@ -1,3 +1,4 @@
+data "aws_availability_zones" "available" {}
 
 resource "aws_db_instance" "punchh-mysql" {
   identifier             = "my-rds-mysql-db"

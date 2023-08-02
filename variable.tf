@@ -6,3 +6,7 @@ variable "region" {
 variable "profile" {
   default = "default"
 }
+
+variable "db_password" {
+  sensitive = true
+}
