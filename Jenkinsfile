@@ -5,13 +5,13 @@ pipeline {
             AWS_SECRET_ACCESS_KEY = credentials ('AWS_SECRET_ACCESS_KEY')
             AWS_DEFAULT_REGION    = credentials ('AWS_DEFAULT_REGION')
         } 
-
+    stages {
         stage("Production Approval") {
             when {
                 anyOf {
                 branch "main"
+                }
             }
-        }
             steps {
                 // Deployment Approval
                 sh "echo ${env.BRANCH_NAME} Deployment Approval"
@@ -36,6 +36,8 @@ pipeline {
                 sh "Hello World - Thank you!"
             }
         }
+    }    
+
    
     post {  
         always {
